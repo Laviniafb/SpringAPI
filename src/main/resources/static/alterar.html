@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Produto</title>
+    <style>
+        /* Estilos que você já definiu anteriormente */
+
+        /* Estilos específicos para o formulário */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1{
+            text-align: center;
+        }
+
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Alterar Produto</h1>
+<form action="/api/produtos/atualizar/{id}" method="PUT">
+    <label for="nome">Nome do Produto:</label>
+    <input type="text" id="nome" name="nome" required>
+
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+    <label for="preco">Preço:</label>
+    <input type="number" id="preco" name="preco" step="0.01" required>
+
+    <label for="quantidade">Quantidade em Estoque:</label>
+    <input type="number" id="quantidade" name="quantidade" required>
+
+    <button type="submit">Atualizar Produto</button>
+</form>
+<script>
+    // Função para enviar o formulário de atualização
+    function atualizarProduto() {
+        const form = document.querySelector('form');
+        const id = form.getAttribute('data-id');
+        const nome = form.nome.value;
+        const descricao = form.descricao.value;
+        const preco = parseFloat(form.preco.value);
+        const quantidade = parseInt(form.quantidade.value);
+
+        const produtoAtualizado = {
+            nome: nome,
+            descricao: descricao,
+            preco: preco,
+            quantidadeestoque: quantidade
+        };
+
+        fetch(`/api/produtos/atualizar/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(produtoAtualizado)
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Produto atualizado com sucesso');
+                    // Redirecionar ou mostrar uma mensagem de sucesso conforme necessário
+                } else {
+                    console.error('Erro ao atualizar produto');
+                }
+            })
+            .catch(error => console.error('Erro ao atualizar produto:', error));
+    }
+</script>
+
+</body>
+</html>

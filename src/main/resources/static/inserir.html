@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- ... Estilos ... -->
+</head>
+<body>
+<h1>Cadastrar Novo Produto</h1>
+<form action="/api/produtos/inserirForm" method="POST">
+    <label for="nome">Nome do Produto:</label><br>
+    <input type="text" id="nome" name="nome" required><br>
+
+    <label for="descricao">Descrição:</label><br>
+    <textarea id="descricao" name="descricao" required></textarea><br>
+
+    <label for="preco">Preço:</label><br>
+    <input type="number" id="preco" name="preco" step="0.01" required><br>
+
+    <label for="quantidade">Quantidade em Estoque:</label><br>
+    <input type="number" id="quantidade" name="quantidade" required><br>
+
+    <button type="submit">Cadastrar</button>
+</form>
+<p><a href="/api/produtos/selecionar">Voltar para a Lista de Produtos</a></p>
+
+<script>
+    // Não é necessário enviar JSON no corpo da solicitação, basta usar o formato de parâmetros de consulta
+    function inserirProduto() {
+        const form = document.querySelector('form');
+        const nome = form.nome.value;
+        const descricao = form.descricao.value;
+        const preco = parseFloat(form.preco.value);
+        const quantidade = parseInt(form.quantidade.value);
+
+        const queryParams = `nome=${nome}&descricao=${descricao}&preco=${preco}&quantidade=${quantidade}`;
+
+        fetch(`/api/produtos/inserirForm?${queryParams}`, {
+            method: 'POST'
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // Redirecionar ou mostrar uma mensagem de sucesso, conforme necessário
+            })
+            .catch(error => console.error('Erro ao inserir produto:', error));
+    }
+</script>
+
+</body>
+</html>
